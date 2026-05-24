@@ -126,7 +126,7 @@ d) maksymalny czas: 3 minuty (przy bardzo dużym obciążeniu serwera).
 
 3. DIAGRAM PRZEBIEGU
  4.3. Opis komunikatów diagramu interakcji (sekwencji)
-    Poniższy opis przedstawia wymianę komunikatów pomiędzy aktorem a obiektami systemowymi w procesie rejestracji nowego pochówku:
+    Poniższy opis przedstawia wymianę komunikatów pomiędzy aktorem a obiektami systemowymi w procesie rejestracji osoby pochowanej:
  1. otworzFormularz(): Admin inicjuje proces, co powoduje utworzenie i wyświetlenie obiektu interfejsu użytkownika (:RejestracjaForm).
  2. wprowadzDane(): Admin wprowadza do pól formularza szczegółowe dane zmarłego (imię, nazwisko, daty) oraz wybiera numer kwatery.
  3. zatwierdz(): Admin potwierdza chęć zapisu danych poprzez kliknięcie przycisku zatwierdzającego w formularzu.
