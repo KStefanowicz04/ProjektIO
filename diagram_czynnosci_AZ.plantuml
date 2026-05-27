@@ -1,0 +1,79 @@
+@startuml diagram-czynnosci-zapalenie-znicza
+title Diagram czynności — Zapalenie wirtualnego znicza
+
+|Użytkownik|
+start
+:Wyszukuje grób
+(Wyszukiwanie miejsca pochówku);
+
+|System|
+:Wyświetla profil zmarłego
+z opcją „Zapal wirtualny znicz";
+
+|Użytkownik|
+if (Decyzja?) then (rezygnuje)
+  :Pozostaje na profilu zmarłego;
+  stop
+else (wybiera „Zapal znicz")
+endif
+
+|System|
+:Wyświetla formularz:
+  - Podpis (imię / pseudonim),
+  - Rodzaj znicza (ikona z listy),
+  - Treść wspomnienia (opcjonalna);
+
+repeat
+  |Użytkownik|
+  fork
+    :Wypełnia podpis;
+  fork again
+    :Wybiera rodzaj znicza
+    z listy ikon;
+  fork again
+    if (Dodaje wspomnienie?) then (tak)
+      :Wpisuje krótką treść;
+    else (nie)
+    endif
+  end fork
+
+  if (Akcja?) then (Zapal znicz)
+  else (Anuluj)
+    :Rezygnuje z zapalenia znicza;
+    stop
+  endif
+
+  |System|
+  :Walidacja danych;
+  if (Podpis < 2 znaki?) then (tak)
+    :Komunikat: „Podpis musi mieć
+    co najmniej 2 znaki";
+    :dane niepoprawne;
+  elseif (Treść > 100 znaków?) then (tak)
+    :Komunikat: „Przekroczono
+    limit 100 znaków";
+    :dane niepoprawne;
+  else (nie)
+    :dane poprawne;
+  endif
+repeat while (dane niepoprawne?) is (tak) not (nie)
+
+|System|
+fork
+  :Zapis znicza w bazie
+  (podpis, rodzaj, treść,
+  data zapalenia);
+fork again
+  :Ustawienie czasu wyświetlania
+  znicza na profilu;
+fork again
+  :Odświeżenie widoku
+  profilu zmarłego;
+end fork
+
+|Użytkownik|
+:Widzi swój znicz
+na profilu zmarłego;
+stop
+
+@enduml
