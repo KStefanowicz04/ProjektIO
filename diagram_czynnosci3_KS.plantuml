@@ -2,43 +2,26 @@
 title Diagram czynności - Wynajęcie działki
 
 |Lista działek|
-start
-if () then (Filtrowanie działki po
-cenie albo sekcji cmentarza)
-    :Lista działek pokazuje
-    tylko działki pasujące do filtrów;
-else (else)
-endif
-
-:Wybór działki przez Użytkownika;
-
-|Strona działki|
-:Strona ze szczegółowymi informacjami o działce;
-
 repeat
-    if () then (rezygnacja)
-        |Lista działek|
-        :Powrót do listy działek;
-        end
-    |Strona działki|
-    else (else)
-    endif
+    repeat
+        :Wybór działki przez Użytkownika;
 
-    :Wypełnienie informacji kontaktowych przez Użytkownika;
-repeat while (dane są poprawne) is (nie) not (tak)
+        |Strona działki|
+        :Strona ze szczegółowymi informacjami o działce;
 
-|Usługa płatnicza|
-:Użytkownik podaje dane płatnicze;
+    repeat while () is (rezygnacja) not (else)
 
-if () then (Nie potwierdzono płatności)
-    |Lista działek|
-    :Powrót do listy działek;
-    end
+    repeat
+
+        :Wypełnienie informacji kontaktowych przez Użytkownika;
+    repeat while (dane są poprawne) is (nie) not (tak)
+
+    |Usługa płatnicza|
+    :Użytkownik podaje dane płatnicze;
+repeat while () is (Nie potwierdzono płatności) not (Potwierdzono płatność)
+
 |Strona działki|
-else (Potwierdzono płatność)
-endif
-
-:Komunikat potwierdzające wynajęcie działki;
+:Komunikat potwierdzający wynajęcie działki;
 end
 
 @enduml
