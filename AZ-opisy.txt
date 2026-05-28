@@ -1,0 +1,60 @@
+1. Opis przypadku użycia „Zapalenie wirtualnego znicza”
+
+1.1. Uczestniczący aktorzy
+-Użytkownik
+
+1.2. Podstawowy ciąg zdarzeń
+-Użytkownik wyszukuje konkretny grób w systemie (przypadek użycia „Wyszukiwanie miejsca pochówku”).
+-System wyświetla profil zmarłego wraz z opcją „Zapal wirtualny znicz”.
+-Użytkownik podejmuje decyzję:
+  -jeśli rezygnuje, pozostaje na profilu zmarłego, a proces kończy się.
+  -jeśli wybiera „Zapal znicz”, proces jest kontynuowany.
+-System wyświetla formularz składający się z pól:
+  -Podpis (imię lub pseudonim) – pole wymagane.
+  -Rodzaj znicza (ikona z listy) – pole wymagane.
+  -Treść wspomnienia – pole opcjonalne.
+-Użytkownik wypełnia formularz:
+  -wpisuje podpis,
+  -wybiera rodzaj znicza,
+  -opcjonalnie wpisuje krótką treść wspomnienia.
+-Użytkownik wybiera akcję:
+  -„Zapal znicz” – przejście do weryfikacji danych,
+  -„Anuluj” – przerwanie procesu bez zapisu.
+-System weryfikuje poprawność wprowadzonych danych:
+  -Podpis – musi zawierać co najmniej 2 znaki.
+  -Treść wspomnienia – maksymalnie 100 znaków.
+-Jeżeli dane są niepoprawne, system wyświetla komunikat o błędzie i umożliwia poprawę danych (powrót do formularza) do momentu uzyskania poprawnych danych.
+-Jeżeli dane są poprawne, system:
+  -zapisuje znicz w bazie danych (podpis, rodzaj, treść, data zapalenia),
+  -ustawia czas wyświetlania znicza na profilu zmarłego,
+  -odświeża widok profilu zmarłego.
+-Użytkownik widzi dodany przez siebie znicz na profilu zmarłego.
+
+1.3. Alternatywne ciągi zdarzeń
+a) Użytkownik rezygnuje na profilu zmarłego:
+-Użytkownik nie wybiera opcji „Zapal znicz”.
+-System pozostaje na profilu zmarłego bez zmian.
+
+b) Użytkownik anuluje w formularzu:
+-Użytkownik wybiera przycisk „Anuluj”.
+-System przerywa proces zapalania znicza i nie zapisuje żadnych danych.
+
+c) Podpis zbyt krótki:
+-System wykrywa podpis krótszy niż 2 znaki.
+-System wyświetla komunikat: „Podpis musi mieć co najmniej 2 znaki”.
+-Użytkownik poprawia podpis i ponownie zatwierdza formularz.
+
+d) Przekroczenie limitu w treści wspomnienia:
+-System wykrywa treść dłuższą niż 100 znaków.
+-System wyświetla komunikat: „Przekroczono limit 100 znaków”.
+-Użytkownik skraca treść i ponownie zatwierdza formularz.
+
+1.4. Zależności czasowe
+a) częstotliwość wykonania: wysoka, zależna od liczby odwiedzających stronę.
+b) przewidywane spiętrzenia: święta państwowe, rocznice oraz Dzień Wszystkich Świętych.
+c) typowy czas realizacji: poniżej 1 minuty.
+d) maksymalny czas realizacji: 3 minuty.
+
+1.5. Wartości uzyskiwane przez aktora po zakończeniu przypadku użycia
+-Symboliczne upamiętnienie osoby zmarłej w przestrzeni cyfrowej.
+-Potwierdzenie wyświetlenia znaku pamięci na profilu zmarłego.
