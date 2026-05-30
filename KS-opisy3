@@ -1,7 +1,18 @@
-Użytkownik wchodzi na stronę z działkami.
-Opcjonalnie, Użytkownik korzysta z wyszukiwarki (wybiera przedział cen, wybiera sekcję cmentarza), a system zwraca tylko działki które pasują do wybranych opcji wyszukiwań
-Użytkownik wybiera interesującą go działkę, System zwraca podstronę przedstawiającą więcej informacji o danej działce
-Użytkownik podejmuje decyzję: wraca do listy działek, albo potwierdza zakup działki.
-Jeśli Użytkownik potwierdzia zakup działki, wpisuje swoje dane. W przypadku błędnych danych, Użytkownik musi podać poprawne albo wrócić do listy działek.
-Jeśli dane są poprawne, Użytkownik zostaje przekierowany do Usługi płatniczej, gdzie musi zapłacić za wynajem działki.
-Jeśli płatność zakończy się powodzeniem, użytkownik jest przekierowany do strony z potwierdzeniem wynajęcia działki z opcją powrotu do listy działek.
+Plany diagramów.
+Diagram czynności 3:
+    Użytkownik wchodzi na stronę z działkami.
+    Opcjonalnie, Użytkownik korzysta z wyszukiwarki (wybiera przedział cen, wybiera sekcję cmentarza), a system zwraca tylko działki które pasują do wybranych opcji wyszukiwań
+    Użytkownik wybiera interesującą go działkę, System zwraca podstronę przedstawiającą więcej informacji o danej działce
+    Użytkownik podejmuje decyzję: wraca do listy działek, albo potwierdza zakup działki.
+    Jeśli Użytkownik potwierdzia zakup działki, wpisuje swoje dane. W przypadku błędnych danych, Użytkownik musi podać poprawne albo wrócić do listy działek.
+    Jeśli dane są poprawne, Użytkownik zostaje przekierowany do Usługi płatniczej, gdzie musi zapłacić za wynajem działki.
+    Jeśli płatność zakończy się powodzeniem, użytkownik jest przekierowany do strony z potwierdzeniem wynajęcia działki z opcją powrotu do listy działek.
+
+
+
+
+Diagram przebiegu 3:
+    Użytkownik pyta Bazę Danych czy dane już występują
+    (opt) Jeśli w bazie nie występują dane osobowe, użytkownik wypełnia formularz i dane są wysyłane do Bazy
+    Użytkownik wypełnia dane płatnicze
+    Informacje o dokonanej płatności zostają zapisane w Bazie Danych

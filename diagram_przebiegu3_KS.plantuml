@@ -1,0 +1,56 @@
+@startuml
+  hide footbox
+
+  actor Użytkownik as u
+  participant ": FormularzDaneOsobowe" as fd
+  participant ": FormularzPłatność" as fp
+  database ": BazaDanych" as db
+
+  '1 - Użytkownik pyta Bazę Danych czy jego dane już występują w bazie
+  activate u
+  u -> db : 1: sprawdzDane()
+  activate db
+  db -->> u : <<return>>\n2: bWBazie
+  deactivate db
+
+  '2 - (opt) Jeśli w bazie nie występują dane osobowe,
+  'użytkownik wypełnia formularz i dane są wysyłane do Bazy
+  opt bWBazie == true
+    u ->> fd ** : <<create>>\n3: utworzFormDane()
+
+    u ->> fd : 4: wprowadzDaneO()
+    activate fd
+    deactivate fd
+
+    u ->> fd : 5: zatwierdz()
+    activate fd
+
+    fd -\\ db : 6. zapiszDane()
+    activate db
+    deactivate fd
+    deactivate db
+
+    u ->> fd !! : <<destroy>>\n7: usunFD()
+  end
+
+  '3 -  Użytkownik wypełnia dane płatnicze
+  u ->> fp ** : <<create>>\n8: utworzFormPlatn()
+  u ->> fp : 9: wprowadzDaneP()
+  activate fp
+  deactivate fp
+
+  u ->> fp : 10: zatwierdz()
+  activate fp
+
+  '4 - Zapisanie info o płatności do Bazy Danych
+  fp -\\ db : 11: zapiszPlatn()
+  deactivate fp
+  activate db
+  deactivate db
+
+  
+  u ->> fp !! : <<destroy>>\n12: usunFP()
+
+
+
+@enduml
