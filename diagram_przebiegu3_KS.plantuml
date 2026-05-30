@@ -15,7 +15,7 @@
 
   '2 - (opt) Jeśli w bazie nie występują dane osobowe,
   'użytkownik wypełnia formularz i dane są wysyłane do Bazy
-  opt bWBazie == true
+  opt bWBazie == false
     u ->> fd ** : <<create>>\n3: utworzFormDane()
 
     u ->> fd : 4: wprowadzDaneO()
