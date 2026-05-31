@@ -1,0 +1,72 @@
+@startuml DiagramStanowPogrzeb
+title Diagram stanów - Cykl życia Pogrzebu
+
+skinparam state {
+    BackgroundColor #F8F8F8
+    BorderColor #555555
+    ArrowColor #333333
+}
+
+[*] --> Zgloszony : rejestracja zgonu\n(utworzenie Nieboszczyka)
+
+state Zgloszony {
+    Zgloszony : utworzono rekord Nieboszczyka
+    Zgloszony : brak wystawionego Aktu Zgonu
+}
+
+state OczekujeNaDokumenty {
+    OczekujeNaDokumenty : kompletowanie Aktu Zgonu
+    OczekujeNaDokumenty : ustalenie Przyczyny Smierci
+}
+
+state WyborDzialki {
+    WyborDzialki : wybór miejsca pochówku
+}
+
+state PrzypisanieObslugi {
+    PrzypisanieObslugi : ksiądz / grabarz / dom pogrzebowy
+}
+
+state Zaplanowany {
+    Zaplanowany : data + działka + obsługa ustalone
+    Zaplanowany : pogrzeb gotowy do realizacji
+}
+
+state WTrakcie {
+    WTrakcie : ceremonia w toku
+}
+
+state Zrealizowany {
+    Zrealizowany : utworzono Grób
+    Zrealizowany : Nieboszczyk spoczywa na działce
+}
+
+state Anulowany #FFE0E0 {
+    Anulowany : pogrzeb nie doszedł do skutku
+}
+
+' ===================== Przejścia główne =====================
+
+Zgloszony --> OczekujeNaDokumenty : rozpocznij kompletowanie\ndokumentów
+OczekujeNaDokumenty --> WyborDzialki : Akt Zgonu wystawiony\n[dokumenty kompletne]
+WyborDzialki --> PrzypisanieObslugi : wybrano działkę
+PrzypisanieObslugi --> Zaplanowany : komplet obsługi przypisany\n[działka opłacona]
+Zaplanowany --> WTrakcie : rozpoczęcie ceremonii\n[nadszedł termin pogrzebu]
+WTrakcie --> Zrealizowany : zakończenie ceremonii\n/ utwórz Grob
+
+' ===================== Przejścia powrotne / korekty =====================
+
+Zaplanowany --> WyborDzialki : zmiana terminu\nlub obsługi
+
+' ===================== Zakończenia =====================
+
+Zrealizowany --> [*] : zamknięcie sprawy\n(zarchiwizowanie)
+
+OczekujeNaDokumenty --> Anulowany : brak dokumentów\n/ błąd danych
+WyborDzialki --> Anulowany : rezygnacja rodziny
+PrzypisanieObslugi --> Anulowany : rezygnacja rodziny
+Zaplanowany --> Anulowany : odwołanie ceremonii
+
+Anulowany --> [*]
+
+@enduml
