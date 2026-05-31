@@ -1,0 +1,119 @@
+@startuml WynajemDzialkiStripe
+title Sekwencja: Wynajem działki z płatnością Stripe
+
+skinparam sequenceMessageAlign center
+
+actor "Użytkownik" as U
+participant "Wynajem działki" as RP
+participant "Obsługa płatności" as PC
+database "Baza danych" as DB
+participant "Stripe" as S
+
+autonumber
+
+== Inicjacja wynajmu ==
+
+U -> RP : wynajmij działkę
+activate RP
+
+RP -> DB : pobierz dane użytkownika
+activate DB
+DB --> RP : dane użytkownika
+deactivate DB
+
+alt brak użytkownika
+    RP --> U : błąd 404
+end
+
+RP -> DB : znajdź właściciela
+activate DB
+DB --> RP : właściciel lub brak
+deactivate DB
+
+opt brak właściciela
+    RP -> DB : utwórz i zapisz właściciela
+    activate DB
+    DB --> RP : zapisano
+    deactivate DB
+end
+
+RP -> DB : pobierz działkę
+activate DB
+DB --> RP : działka
+deactivate DB
+
+alt brak działki
+    RP --> U : błąd 404
+end
+
+RP -> DB : utwórz i zapisz płatność
+activate DB
+DB --> RP : zapisano
+deactivate DB
+RP --> U : przekieruj do płatności
+deactivate RP
+
+== Utworzenie sesji płatności ==
+
+U -> PC : rozpocznij płatność
+activate PC
+
+PC -> DB : pobierz płatność
+activate DB
+DB --> PC : płatność
+deactivate DB
+
+alt brak płatności
+    PC --> U : błąd 404
+end
+
+PC -> S : utwórz sesję płatności
+activate S
+S --> PC : adres sesji
+deactivate S
+
+PC --> U : przekieruj do Stripe
+deactivate PC
+
+== Płatność po stronie Stripe ==
+
+U -> S : zapłać kartą
+activate S
+
+alt płatność udana
+    S --> U : płatność udana
+    deactivate S
+
+    U -> PC : potwierdź płatność
+    activate PC
+    PC -> DB : pobierz płatność
+    activate DB
+    DB --> PC : płatność
+    deactivate DB
+    PC -> DB : zapisz datę i przypisz działkę
+    activate DB
+    DB --> PC : zapisano
+    deactivate DB
+    PC --> U : pokaż potwierdzenie
+    deactivate PC
+
+else płatność anulowana
+    S --> U : płatność anulowana
+
+    U -> PC : anuluj płatność
+    activate PC
+    PC -> DB : pobierz płatność
+    activate DB
+    DB --> PC : płatność
+    deactivate DB
+    opt płatność nieopłacona
+        PC -> DB : usuń płatność z bazy
+        activate DB
+        DB --> PC : usunięto
+        deactivate DB
+    end
+    PC --> U : wróć do listy działek
+    deactivate PC
+end
+
+@enduml
