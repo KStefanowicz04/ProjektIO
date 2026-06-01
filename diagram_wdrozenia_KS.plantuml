@@ -1,0 +1,9 @@
+@startuml
+
+    node "<<device>>\nSerwer [1]\n" {
+        database "<<db>>\nBaza Danych" as sDB
+        ICzytajDB <-- sDB
+        IPiszDB <-- sDB
+    }
+
+@enduml
