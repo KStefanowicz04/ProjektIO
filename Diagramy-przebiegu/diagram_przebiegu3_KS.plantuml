@@ -1,56 +1,55 @@
 @startuml
   hide footbox
 
-  actor Użytkownik as u
+  actor ": Użytkownik" as u
   participant ": FormularzDaneOsobowe" as fd
-  participant ": FormularzPłatność" as fp
+  participant ": FormularzDanePłatnicze" as fp
+  participant ": Serwer" as s
   database ": BazaDanych" as db
 
-  '1 - Użytkownik pyta Bazę Danych czy jego dane już występują w bazie
-  activate u
-  u -> db : 1: sprawdzDane()
-  activate db
-  db -->> u : <<return>>\n2: bWBazie
-  deactivate db
+  '1 - Użytkownik wypełnia formularz o danych osobowych
+  u ->> fd ** : <<create>>\n1: utworzFormDane()
 
-  '2 - (opt) Jeśli w bazie nie występują dane osobowe,
-  'użytkownik wypełnia formularz i dane są wysyłane do Bazy
-  opt bWBazie == false
-    u ->> fd ** : <<create>>\n3: utworzFormDane()
+  u -> fd : 2: wprowadzDaneO()
+  activate fd
+  fd -->> u
+  deactivate fd
 
-    u ->> fd : 4: wprowadzDaneO()
-    activate fd
-    deactivate fd
+  u -> fd : 3: zatwierdz()
+  activate fd
+  fd -> s : 4: wyslijDaneO()
+  deactivate fd
+  activate s
+  s ->> u
+  deactivate s
 
-    u ->> fd : 5: zatwierdz()
-    activate fd
+  '2 - (opt) Użytkownik wypełnia dane płatnicze
+  opt
+    u ->> fp ** : <<create>>\n5: utworzFormPlatn()
+    u -> fp : 6: wprowadzDaneP()
+    activate fp
+    fp -->> u
+    deactivate fp
 
-    fd -\\ db : 6. zapiszDane()
-    activate db
-    deactivate fd
-    deactivate db
-
-    u ->> fd !! : <<destroy>>\n7: usunFD()
+    u -> fp : 7: zatwierdz()
+    activate fp
+    fp -->> s : 8: wyslijDaneP()
+    deactivate fp
+    activate s
+    s --> u
+    deactivate s
   end
 
-  '3 -  Użytkownik wypełnia dane płatnicze
-  u ->> fp ** : <<create>>\n8: utworzFormPlatn()
-  u ->> fp : 9: wprowadzDaneP()
-  activate fp
-  deactivate fp
-
-  u ->> fp : 10: zatwierdz()
-  activate fp
-
-  '4 - Zapisanie info o płatności do Bazy Danych
-  fp -\\ db : 11: zapiszPlatn()
-  deactivate fp
+  '3 - Potwierdzenie utworzenia konta
+  u -> s : 9. zakoczWypelnianieDanych()
+  activate s
+  s -->> db : 10. zapiszDane()
+  deactivate s
   activate db
+  db -->> u
   deactivate db
 
-  
-  u ->> fp !! : <<destroy>>\n12: usunFP()
-
-
+  u ->> fp !! : <<destroy>>\n11: usunFP()
+  u ->> fd !! : <<destroy>>\n12: usunFD()
 
 @enduml

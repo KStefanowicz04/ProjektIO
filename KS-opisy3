@@ -1,5 +1,5 @@
 Plany diagramów.
-Diagram czynności 3:
+Diagram czynności 3 (Wynajem działki):
     Użytkownik wchodzi na stronę z działkami.
     Opcjonalnie, Użytkownik korzysta z wyszukiwarki (wybiera przedział cen, wybiera sekcję cmentarza), a system zwraca tylko działki które pasują do wybranych opcji wyszukiwań
     Użytkownik wybiera interesującą go działkę, System zwraca podstronę przedstawiającą więcej informacji o danej działce
@@ -11,8 +11,7 @@ Diagram czynności 3:
 
 
 
-Diagram przebiegu 3:
-    Użytkownik pyta Bazę Danych czy dane już występują
-    (opt) Jeśli w bazie nie występują dane osobowe, użytkownik wypełnia formularz i dane są wysyłane do Bazy
-    Użytkownik wypełnia dane płatnicze
-    Informacje o dokonanej płatności zostają zapisane w Bazie Danych
+Diagram przebiegu 3 (Rejestracja Użytkownika):
+    Użytkownik wypełnia formularz o danych osobowych
+    (opt) Użytkownik wypełnia dane płatnicze
+    Użytkownik zostaje zapisany do Bazy Danych
