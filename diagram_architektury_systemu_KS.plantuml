@@ -1,0 +1,7 @@
+@startuml
+
+[Aplikacja internetowa] <-> [Serwer]
+"API" <-- [Serwer]
+[Serwer] <-> [Baza Danych]
+
+@enduml
