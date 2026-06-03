@@ -41,7 +41,7 @@
   end
 
   '3 - Potwierdzenie utworzenia konta
-  u -> s : 9. zakoczWypelnianieDanych()
+  u -> s : 9. zakonczWypelnianieDanych()
   activate s
   s -->> db : 10. zapiszDane()
   deactivate s

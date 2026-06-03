@@ -1,0 +1,15 @@
+@startuml DiagramStanowPogrzeb
+title Diagram stanów - Cykl życia konta Użytkownika
+
+[*] --> Niezatwierdzone : rejestracja [email nie jest zajęty] /\nwysłanie maila z potwierdzeniem
+Niezatwierdzone --> Zarejestrowane : potwierdzenie [użytkownik\npotwierdził rejestrację] 
+Zarejestrowane --> Deaktywowane : deaktywacja konta [użytkownik\nrozpoczął usuwanie konta]
+Deaktywowane --> Zarejestrowane : zalogowanie
+Deaktywowane --> Zarchiwizowane : [czas deaktywowane > 21 dni]
+Zarchiwizowane --> [*]
+Zarchiwizowane : konta nie można\nusunąć całkowicie\nz powodów prawnych
+Zarejestrowane --> Nieaktywne : [czas od ostatniego\nzalogowania > 6 miesięcy]
+Nieaktywne : automatyczne opłaty\n wstrzymane
+Nieaktywne --> Zarejestrowane : zalogowanie
+
+@enduml
