@@ -1,9 +1,33 @@
 @startuml
 
-    node "<<device>>\nSerwer [1]\n" {
+    node "<<device>>\nSerwer [1]\nIntel Xeon E3-1220, 32GB RAM, [2] 512GB SSD" {
+        [<<exe>>\nAplikacjaCmentarz] as ap
+        "Dostęp\ndo aplikacji" <-- ap
+        "API" <-- ap
+
         database "<<db>>\nBaza Danych" as sDB
         ICzytajDB <-- sDB
         IPiszDB <-- sDB
+
+        ap ..> ICzytajDB
+        ap ..> IPiszDB
+    }
+
+    node "<<device>>\nKomputer biurowy [22]" {
+        [<<exe>>\nPrzeglądarka] as apc
+        apc --> "Dostęp\ndo aplikacji" : Ethernet
+    }
+
+    node "<<device>>\nKomputer administratora [3]" {
+        [<<exe>>\nPrzeglądarka] as apca
+        apca -> "Dostęp\ndo aplikacji" : Ethernet
+        apca -> "API" : Ethernet
+    }
+
+    node "<<device>>\nUrządzenie użytkownika [100]" {
+        [<<exe>>\nPrzeglądarka] as apu
+        apu ..> "Dostęp\ndo aplikacji" : internet
+        apu ..> "API" : internet
     }
 
 @enduml
