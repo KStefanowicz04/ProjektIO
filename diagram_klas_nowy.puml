@@ -1,0 +1,192 @@
+@startuml DiagramKlasNowy
+title Diagram klas - System Cmentarz (Cmentarz.NET)
+
+skinparam classAttributeIconSize 0
+skinparam linetype ortho
+skinparam shadowing false
+skinparam class {
+    BackgroundColor #FBFBFB
+    BorderColor #4A4A4A
+    ArrowColor #333333
+}
+hide methods
+hide circle
+
+' ===================== Użytkownicy i dostęp =====================
+package "Użytkownicy i dostęp" #EEF4FB {
+
+    class Uzytkownik {
+        +Id : int
+        Imie : string
+        Nazwisko : string
+        Email : string {unique}
+        Haslo : byte[]
+    }
+
+    class Rola {
+        +Id : int
+        Nazwa : string
+    }
+
+    class DaneKontaktowe {
+        +Id : int
+        Telefon : string
+        Email : string
+        Miasto : string
+        Ulica : string
+        KodPocztowy : string
+    }
+}
+
+' ===================== Działki i opłaty =====================
+package "Działki i cmentarz" #EFF8EF {
+
+    class SekcjaCmentarza {
+        +Id : int
+        Nazwa : string
+    }
+
+    class Dzialka {
+        +Id : int
+        Cena : int
+    }
+
+    class WlascicielDzialki {
+        +Id : int
+        Imie : string
+        Nazwisko : string
+    }
+
+    class Platnosc {
+        +Id : int
+        DataPlatnosci : DateTime
+        Kwota : decimal
+    }
+
+    class Grob {
+        +Id : int
+    }
+
+    class Nagrobek {
+        +Id : int
+        DataPostawienia : DateTime
+    }
+
+    class NapisNaNagrobku {
+        +Id : int
+        Tresc : string
+    }
+
+    class GlebokoscPochowku {
+        +Id : int
+        Glebokosc : string
+    }
+
+    class Material {
+        +Id : int
+        Rodzaj : string
+    }
+}
+
+' ===================== Zmarli i pogrzeby =====================
+package "Zmarli i pogrzeby" #FBF1EE {
+
+    class Nieboszczyk {
+        +Id : int
+        Imie : string
+        Nazwisko : string
+        DataUrodzenia : DateTime
+        DataZgonu : DateTime
+    }
+
+    class Trumna {
+        +Id : int
+        Cena : decimal
+    }
+
+    class Pogrzeb {
+        +Id : int
+        DataPogrzebu : DateTime
+    }
+
+    class AktZgonu {
+        +Id : int
+        DataWystawienia : DateTime
+        Wystawca : string
+    }
+
+    class PrzyczynaSmierci {
+        +Id : int
+        Przyczyna : string
+    }
+
+    class Ksiadz {
+        +Id : int
+        Imie : string
+        Nazwisko : string
+    }
+
+    class Parafia {
+        +Id : int
+        Nazwa : string
+    }
+
+    class Grabarz {
+        +Id : int
+        Imie : string
+        Nazwisko : string
+    }
+
+    class DomPogrzebowy {
+        +Id : int
+        Nazwa : string
+    }
+}
+
+' ===================== Relacje =====================
+' Legenda notacji:
+'   *--  kompozycja  (część nie istnieje bez całości; kasowanie kaskadowe)
+'   o--  agregacja   (część istnieje samodzielnie, tylko zrzeszona)
+'   -->  asocjacja   (zwykłe powiązanie / odwołanie do współdzielonego rekordu)
+
+' --- Użytkownicy / dostęp ---
+Uzytkownik "*" --> "*" Rola : posiada >
+Uzytkownik "1" --> "1" DaneKontaktowe : ma >
+
+' --- Właściciel powiązany z kontem ---
+WlascicielDzialki "0..1" --> "0..1" Uzytkownik : to konto >
+WlascicielDzialki "1" --> "1" DaneKontaktowe : ma >
+
+' --- Działki, sekcje, właściciele, płatności ---
+SekcjaCmentarza "1" *-- "*" Dzialka : zawiera >
+Dzialka "*" --> "0..1" WlascicielDzialki : należy do >
+Platnosc "*" --> "1" Dzialka : dotyczy >
+
+' --- Groby na działce ---
+Dzialka "1" *-- "*" Grob : mieści >
+Grob "1" *-- "1" GlebokoscPochowku : pochowany na >
+Grob "1" *-- "1" Nagrobek : oznaczony >
+Nagrobek "1" *-- "1" NapisNaNagrobku : zawiera >
+Nagrobek "*" --> "1" Material : wykonany z >
+
+' --- Zmarły i jego dane ---
+Nieboszczyk "1" *-- "0..1" Trumna : spoczywa w >
+Nieboszczyk "1" *-- "0..1" AktZgonu : ma >
+Nieboszczyk "1" --> "0..1" Grob : spoczywa w >
+Trumna "*" --> "1" Material : wykonana z >
+AktZgonu "*" --> "1" PrzyczynaSmierci : wskazuje >
+
+' --- Pogrzeb ---
+Nieboszczyk "1" *-- "0..1" Pogrzeb : ma >
+Pogrzeb "*" --> "1" Dzialka : odbywa się na >
+Pogrzeb "*" --> "1" Ksiadz : prowadzony przez >
+Pogrzeb "*" --> "*" Grabarz : obsługiwany przez >
+Pogrzeb "*" --> "0..1" DomPogrzebowy : organizowany przez >
+
+' --- Duchowieństwo i obsługa ---
+Parafia "1" o-- "*" Ksiadz : zrzesza >
+Ksiadz "1" --> "1" DaneKontaktowe : ma >
+Grabarz "1" --> "1" DaneKontaktowe : ma >
+DomPogrzebowy "1" --> "1" DaneKontaktowe : ma >
+
+@enduml
